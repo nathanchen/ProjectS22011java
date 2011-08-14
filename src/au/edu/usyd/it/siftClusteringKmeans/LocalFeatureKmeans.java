@@ -14,14 +14,13 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 public class LocalFeatureKmeans 
 {
-	static final int NUMCLUSTERS = 2;
 	static final String DIR = "/Users/natechen/Desktop/2/2/";
-	static final String filename = "/Users/natechen/Desktop/2/2/siftAll.arff";
-	static final String CODEWORDFILE = "";
+	static final String filename = DIR + "siftAll.arff";
 	
 	
-	public static void main(String[] args) 
+	public void localFeatureKmeans(String DIR, int NUMCLUSTERS) 
 	{
+		System.out.println("Performing KMeans on sift features....");
 		PrintWriter histo;
 		int[] distribution = new int[NUMCLUSTERS]; 
 		Map<Integer, String> map = new HashMap<Integer, String>();
@@ -122,7 +121,7 @@ public class LocalFeatureKmeans
 							/*
 							 * put the distribution info to an array
 							 * */
-							double[] tempArr = calDistribution( temp,  array);
+							double[] tempArr = calDistribution( temp,  array, NUMCLUSTERS);
 							for(int i = (f-1) * NUMCLUSTERS; i < f * NUMCLUSTERS; i++)
 							{
 								distri[i] = tempArr[i-(f-1) * NUMCLUSTERS];
@@ -234,7 +233,7 @@ public class LocalFeatureKmeans
 	 * output:
 	 * @param: double[] result -> feature distribution for one frame
 	 * */
-	private static double[] calDistribution(String temp, double[][] array)
+	private static double[] calDistribution(String temp, double[][] array, int NUMCLUSTERS)
 	{
 		double[] distribution = new double[NUMCLUSTERS];
 		double[] result = new double[NUMCLUSTERS];

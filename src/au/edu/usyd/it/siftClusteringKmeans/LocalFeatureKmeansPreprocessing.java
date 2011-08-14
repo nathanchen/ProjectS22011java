@@ -16,7 +16,7 @@ public class LocalFeatureKmeansPreprocessing
 	 * 
 	 * 
 	 * */
-	public void LocalFeatureKmeansPreprocessing(String fileDir) 
+	public void localFeatureKmeansPreprocessing(String fileDir) 
 	{
 		File dir = new File(fileDir);
 		PrintWriter siftWriter;
