@@ -26,7 +26,7 @@ public class XMLReader
 			/*
 			 * use ".mp4.xml" for now
 			 * */
-			if(str.endsWith(".mp4.xml"))
+			if(str.endsWith("ff.mp4.xml"))
 			{
 				try
 				{
@@ -65,13 +65,27 @@ public class XMLReader
 							result = result + st + "\n";
 						}
 					}
+					String[] parse = result.trim().split("\n");
+					String lol ="";
+					for(int i = 0; i < parse.length; i = i + 3)
+					{
+						int num1 = Integer.parseInt(parse[i]);
+						int num2 = Integer.parseInt(parse[i + 1]);
+						int num3 = Integer.parseInt(parse[i + 2]);
+						if((num3 - num2 > 5) && (num2 - num1 > 5))
+						{
+							lol = lol + (num1 + 5) + "\n" + (num2) + "\n" + (num3 - 5) + "\n";
+						}
+						else
+							lol = lol + num1 + "\n" + num2 + "\n" + num3 + "\n";
+					}
 					/*
 					 * output the key frames' info
 					 * 
 					 * */
-					if(!result.trim().isEmpty())
+					if(!lol.trim().isEmpty())
 					{
-						out.println(shotNum + "\n" + result);
+						out.println(shotNum + "\n" + lol.trim());
 					}
 					out.close();
 				}
