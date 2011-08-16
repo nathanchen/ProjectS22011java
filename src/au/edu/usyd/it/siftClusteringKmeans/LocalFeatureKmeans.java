@@ -336,7 +336,7 @@ public class LocalFeatureKmeans
 		return Math.log(numOfDocs/numContain + 1);
 	}
 	
-	private double[][] scoreMatrix(double[][] matrix, int numOfDocs, int numOfCols)
+	public double[][] scoreMatrix(double[][] matrix, int numOfDocs, int numOfCols)
 	{
 		double[][] score = new double[numOfCols][numOfDocs];
 		int[] total = new int[numOfDocs];
@@ -362,6 +362,7 @@ public class LocalFeatureKmeans
 			for(int row = 0; row < numOfDocs; row++)
 			{
 				score[col][row] = calTF(col, row, total[row], matrix) * calIdf(col, matrix, numOfDocs);
+				System.out.println(score[col][row]);
 			}
 		}
 		

@@ -11,7 +11,7 @@ public class Matrix
 	private double[][] matrix;
 	
 	
-	Matrix(int numOfCols, int numOfRows)
+	public Matrix(int numOfCols, int numOfRows)
 	{
 		matrix = new double[numOfCols][numOfRows];
 	}
@@ -68,6 +68,14 @@ public class Matrix
 	
 	public double[][] getMatrix() 
 	{
+//		double[][] mat = new double[ma.getNumOfCols()][ma.getNumOfRows()];
+//		for(int i = 0; i < ma.getNumOfRows(); i++)
+//		{
+//			for(int j = 0; j < ma.getNumOfCols(); j++)
+//			{
+//				mat[j][i] = ma.getCodeWord()[j];
+//			}
+//		}
 		return matrix;
 	}
 }
