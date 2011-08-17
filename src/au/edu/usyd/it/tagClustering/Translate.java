@@ -15,7 +15,7 @@ public class Translate
 		String[] arr = null;
 		try
 		{
-			String str = "https://www.googleapis.com/language/translate/v2?key=AIzaSyCS9WvUD--kFrdkvufL5jKMmM9VdvhRPyo&q=" + query + "&target=en";
+			String str = "https://www.googleapis.com/language/translate/v2?key=AIzaSyAcO8zm80oZPFHW8cNJKvgJ6j3wsftS0Qk&q=" + query + "&target=en";
 			URL callUrl = new URL(str);
 			URLConnection urlConn = callUrl.openConnection();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));

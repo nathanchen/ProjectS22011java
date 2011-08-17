@@ -10,10 +10,7 @@ import au.edu.usyd.it.siftClusteringKmeans.LocalFeatureKmeans;
 import au.edu.usyd.it.siftClusteringKmeans.Matrix;
 
 
-/*
- * 没有检查文档中包含"\""的情况
- * 
- * */
+
 public class TagKMeansPreprocessing 
 {
 	static ArrayList<Tag> tags = new ArrayList<Tag>();
@@ -41,6 +38,7 @@ public class TagKMeansPreprocessing
 			if(str.endsWith(".xml"))
 			{
 				File file = new File(dir + str);
+				System.out.println(file.getName());
 				parseXML(file);
 			}
 		}
@@ -65,17 +63,24 @@ public class TagKMeansPreprocessing
 		String str1 = hash.toString();
 		System.out.println(str1);
 		String[] trans = str1.substring(1, str1.lastIndexOf("]")).split(", ");
+		
 		String translate = " ";
+		String[] english;
+		Translate tr = new Translate();
 		for(int i = 0; i < trans.length; i++)
 		{
-			translate = translate + "+" + trans[i];
+			System.out.println();
+			System.err.println(trans[i]);
+			english = tr.translate(trans[i]);
+			translate = translate + " " + english;
+			english = null;
 		}
-		Translate tr = new Translate();
-		String[] english = tr.translate(translate.substring(1));
+		
 		hash = new HashSet<String>();
-		for(int i = 0; i < english.length; i++)
+		String[] tra = translate.split(" ");
+		for(int i = 0; i < tra.length; i++)
 		{
-			hash.add(english[i]);
+			hash.add(tra[i]);
 		}
 		System.out.println();
 //		Matrix matrix = new Matrix(hash.size(), tags.size());
@@ -177,9 +182,19 @@ public class TagKMeansPreprocessing
 		double num = 0;
 		for(int i = 0; i < arr.length; i++)
 		{
-			if(arr[i].trim().equalsIgnoreCase(str.trim()))
+			if(str.trim().equalsIgnoreCase(arr[i].trim()))
 			{
 				num++;
+			}
+		}
+		if(num == 0)
+		{
+			for(int i = 0; i < arr.length; i++)
+			{
+				if(str.trim().contains(arr[i].trim()))
+				{
+					num++;
+				}
 			}
 		}
 		return num;
