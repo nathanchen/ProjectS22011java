@@ -45,9 +45,9 @@ public class RunAll
 		globalFeatureGen.generateGlobalFeatures(imageFiles);
 		globalFeat.globalFeat(globalFeatures);
 		globalFeatureKmeansPreprocessing.globalFeatureKmeansPreprocessing(globalFeatures);
-		globalFeatureKmeans.globalFeatureKmeans(globalFeatures, NUMCLUSTERS);
+		globalFeatureKmeans.globalFeatureKmeans(globalFeatures, NUMCLUSTERS, imageFiles);
 		globalFeatureKmeansMoveFrames.globalFeatureKmeansMoveFrames(imageFiles, globalFeatures + "cluster", NUMCLUSTERS);
-		localFeatureKmeansPreprocessing.localFeatureKmeansPreprocessing(siftFiles);
-		localFeatureKmeans.localFeatureKmeans(siftFiles, NUMCLUSTERS);
+//		localFeatureKmeansPreprocessing.localFeatureKmeansPreprocessing(siftFiles);
+//		localFeatureKmeans.localFeatureKmeans(siftFiles, NUMCLUSTERS);
 	}
 }

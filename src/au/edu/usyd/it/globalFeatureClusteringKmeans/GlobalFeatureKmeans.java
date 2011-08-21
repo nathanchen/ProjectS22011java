@@ -1,7 +1,12 @@
 package au.edu.usyd.it.globalFeatureClusteringKmeans;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
 import weka.clusterers.SimpleKMeans;
@@ -40,6 +45,7 @@ public class GlobalFeatureKmeans
 	 * */
 	static final int NUMCLUSTERS = 6;
 	static final String DIR = "/Users/natechen/Desktop/keyframe/globalFeatures/";
+	static final String SCREENSHOT = "/Users/natechen/Desktop/keyframe/";
 	/*
 	 * input:
 	 * @param: ceddAll.arff or fcthAll.arff
@@ -49,10 +55,14 @@ public class GlobalFeatureKmeans
 	 * move the original _0.cedd files or _0.fcth files to new folders, which represents each cluster
 	 * (delete the original files)
 	 * */
-	public void globalFeatureKmeans(String DIR, int NUMCLUSTERS) 
+//	public static void main(String[] args)
+	public void globalFeatureKmeans(String DIR, int NUMCLUSTERS, String imageFiles) 
 	{
 		String filename = DIR + "ceddAll.arff";
 		String LOGFILE = DIR + "ceddLog.txt";
+		String clusterDis = DIR + "clusterDis.txt";
+		File clusterDisFile = new File(clusterDis);
+		ArrayList<Distribution> al = new ArrayList<Distribution>();
 		SimpleKMeans sk = new SimpleKMeans();
 		try
 		{
@@ -87,17 +97,101 @@ public class GlobalFeatureKmeans
 				String fileName = scn.nextLine();
 				File file = new File(DIR + fileName);
 				File des = new File(DIR + "cluster " + arr[n]);
-				FileUtils.moveFileToDirectory(file, des, true);
+//				FileUtils.moveFileToDirectory(file, des, true);
+				Distribution d = new Distribution();
+				d.setThumbnailLoc(imageFiles + fileName.substring(0, fileName.lastIndexOf("_0.cedd")) + "_2.jpg");
+				d.setWhichCluster(arr[n]);
+				al.add(d);
 				n++;
 			}
-			for(int i : sk.getAssignments())
+			
+			System.err.println(al.size());
+			PrintWriter pw = new PrintWriter(clusterDisFile);
+			mergesort(al,0, al.size() - 1);
+			pw.println("This is cluster 0");
+			boolean newCluster = false;
+			pw.println("Tags are abc abc");
+			for(int i = 0; i < al.size() - 1; i++)
 			{
-				System.out.println(i);
+				if(newCluster )
+				{
+					pw.println("END");
+					pw.println("This is cluster " + al.get(i).getWhichCluster());
+					/*
+					 * tags' info to be changed
+					 * 
+					 * */
+					pw.println("Tags are abc abc");
+					newCluster = false;
+				}
+				if(!newCluster)
+				{
+					pw.println(al.get(i).getThumbnailLoc() + " " + al.get(i).getVideoFileLoc());
+				}
+				if(al.get(i).getWhichCluster() != al.get(i + 1).getWhichCluster())
+				{
+					newCluster = true;
+				}
 			}
+			pw.println("END");
+			pw.close();
+			
+//			for(int i : sk.getAssignments())
+//			{
+//				System.out.println(i);
+//			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public static void mergesort(ArrayList<Distribution> al, int low, int high)
+	{
+		if(low < high)
+		{
+			int middle = (low + high) / 2;
+			mergesort(al, low, middle);
+			mergesort(al, middle + 1, high);
+			merge(al, low, middle, high);
+		}
+	}
+	
+	private static void merge(ArrayList<Distribution> al, int low, int middle, int high)
+	{
+		ArrayList<Distribution> helper = new ArrayList<Distribution>();
+		for(Distribution d : al)
+		{
+			helper.add(d);
+		}
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while(i <= middle && j <= high)
+		{
+			if(helper.get(i).getWhichCluster() <= helper.get(j).getWhichCluster())
+			{
+				al.set(k, helper.get(i));
+				i++;
+			}
+			else
+			{
+				al.set(k, helper.get(j));
+				j++;
+			}
+			k++;
+		}
+		
+		while(i <= middle)
+		{
+			al.set(k, helper.get(i));
+			k++;
+			i++;
+		}
+		helper = null;
 	}
 }
